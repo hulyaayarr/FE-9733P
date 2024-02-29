@@ -14,11 +14,11 @@ export const loader = async ({ params }: { params: any }) => {
   const { userId, postId } = params;
 
   const userData: User = await FetchData(
-    `https://jsonplaceholder.typicode.com/users/` + userId
+    `https://jsonplaceholder.typicode.com/users/${userId}`
   );
 
   const commentData: commentType = await FetchData(
-    "https://jsonplaceholder.typicode.com/posts/" + postId + "/comments"
+    `https://jsonplaceholder.typicode.com/posts/${postId}/comments`
   );
 
   return {

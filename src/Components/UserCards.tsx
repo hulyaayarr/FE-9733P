@@ -13,7 +13,7 @@ export default function UserCards({ user }: { user: User }) {
           {user.username}
         </Card.Subtitle>
         <Card.Text>{user.phone}</Card.Text>
-        <Card.Link href={"users/" + user.id}>Card Link</Card.Link>
+        <Card.Link href={"/users/" + user.id}>Card Link</Card.Link>
       </Card.Body>
     </Card>
   );

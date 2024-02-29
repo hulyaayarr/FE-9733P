@@ -1,28 +1,42 @@
-import { useLoaderData } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 import { FetchData } from "../function/FetchData";
 import { User } from "../Types/user";
 import { AlbumType } from "../Types/albumType";
-import AlbumCard from "../Components/AlbumCard";
+// import AlbumCard from "../Components/AlbumCard";
+import { Card, Image } from "react-bootstrap";
+import LikeButton from "../Components/LikeButton";
 
 interface PageData {
   user: User;
-  album: AlbumType[];
+  album: AlbumType;
+  photo: photoType[];
+}
+interface photoType {
+  albumId: number;
+  id: number;
+  title: string;
+  url: string;
+  thumbnailUrl: string;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const loader = async ({ params }: { params: any }) => {
-  const { albumId, userId } = params;
-
-  const userData = await FetchData(
-    "https://jsonplaceholder.typicode.com/users/" + userId
+  const { userId, albumId } = params;
+  const userData: User = await FetchData(
+    `https://jsonplaceholder.typicode.com/users/${userId}`
   );
-  const albumData = await FetchData(
-    "https://jsonplaceholder.typicode.com/albums/" + albumId
+
+  const albumData: AlbumType = await FetchData(
+    `https://jsonplaceholder.typicode.com/albums/${albumId}`
+  );
+  const photoData: photoType[] = await FetchData(
+    `https://jsonplaceholder.typicode.com/albums/${albumId}/photos`
   );
 
   return {
     user: userData,
     album: albumData,
+    photo: photoData,
   };
 };
 
@@ -31,10 +45,48 @@ export const UserAlbumPage = () => {
   return (
     <div>
       UserAlbums <br />
-      {/* User: <Link to={"/users/" + userId}>{user?.username}</Link>; */}
+      <Link to={"/users/" + pageData.user.id}>{pageData.user?.username}</Link>;
+      {pageData && pageData.album && (
+        <Card style={{ width: "18rem" }}>
+          <Card.Body>
+            <Card.Title>
+              Album id:{pageData.album.id}. &nbsp; User id:
+              {pageData.album.userId}
+            </Card.Title>
+            <Card.Subtitle className="mb-2 text-muted">
+              {pageData.album.title}
+            </Card.Subtitle>
+
+            <Card.Link href={"users/" + pageData.album.userId}>
+              Card Link
+            </Card.Link>
+          </Card.Body>
+        </Card>
+      )}
       {pageData &&
-        pageData.album &&
-        pageData.album.map((alb) => <AlbumCard key={alb.id} album={alb} />)}
+        pageData.photo &&
+        pageData.photo.map((old) => (
+          <Card key={old.id} style={{ width: "18rem" }}>
+            <Card.Body>
+              <Card.Title>
+                Photo id:{old.id}. &nbsp; Album id:
+                {old.albumId}
+              </Card.Title>
+              <Card.Subtitle className="mb-2 text-muted">
+                {old.title}
+              </Card.Subtitle>
+              <Image
+                src={old.url}
+                alt={old.title}
+                thumbnail
+                style={{
+                  height: "200px",
+                }}
+              />
+              <LikeButton liked={true} />
+            </Card.Body>
+          </Card>
+        ))}
     </div>
   );
 };

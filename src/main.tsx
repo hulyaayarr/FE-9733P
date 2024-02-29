@@ -18,11 +18,6 @@ const router = createBrowserRouter([
   },
 
   {
-    path: "/users",
-    loader: UsersLoader,
-    element: <AllUsersPage />,
-  },
-  {
     path: "/users/:userId",
     element: <UserPage />,
   },

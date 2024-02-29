@@ -20,7 +20,9 @@ export default function TablistCard({
         <Card.Subtitle className="mb-2 text-muted">{user.title}</Card.Subtitle>
         <Card.Text>{user.body}</Card.Text>
 
-        <Card.Link href={user.userId + "/" + tab + "/"}>See More</Card.Link>
+        <Card.Link href={user.userId + "/" + tab + "/" + user.id}>
+          See More
+        </Card.Link>
       </Card.Body>
     </Card>
   );
