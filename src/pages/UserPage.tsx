@@ -1,25 +1,26 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { User } from "../Types/user";
-import { TabListComponent } from "./TablistPage";
+import { TabList } from "../Components/Tablist";
+import { FetchData } from "../function/FetchData";
 
-const UserIdPage = () => {
+const UserPage = () => {
   const [user, setUser] = useState<User | null>(null);
 
   const params = useParams();
   const userId = params.userId;
   async function getUser() {
-    const response = await fetch(
+    const data = await FetchData(
       "https://jsonplaceholder.typicode.com/users/" + userId
     );
-    const data = await response.json();
 
     setUser(data);
   }
   useEffect(() => {
     getUser();
   }, []);
-  return <div>{userId && <TabListComponent userId={userId} />}</div>;
+  console.log({ user });
+  return <div>{userId && <TabList userId={userId} />}</div>;
 };
 
-export default UserIdPage;
+export default UserPage;

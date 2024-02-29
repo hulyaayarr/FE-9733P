@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import Nav from "react-bootstrap/Nav";
 import { ClipLoader } from "react-spinners";
 import { userPost } from "../Types/user";
-import TablistCard from "../Components/TablistCards";
-import { Link } from "react-router-dom";
+import TablistCard from "./TablistCards";
+import { FetchData } from "../function/FetchData";
 
 type tabs = "posts" | "albums" | "todos";
 
-export function TabListComponent({ userId }: { userId: string }) {
+export function TabList({ userId }: { userId: string }) {
   const [tab, setTab] = useState<tabs>("posts");
   const [userData, setUserData] = useState<userPost[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -16,10 +16,10 @@ export function TabListComponent({ userId }: { userId: string }) {
   const getData = async () => {
     try {
       setIsLoading(true);
-      const response = await fetch(
+      const data = await FetchData(
         "https://jsonplaceholder.typicode.com/users/" + userId + "/" + tab
       );
-      const data = await response.json();
+
       setUserData(data);
       setIsLoading(false);
       setError(null);
@@ -73,7 +73,7 @@ export function TabListComponent({ userId }: { userId: string }) {
         userData &&
         userData.map((ud) => (
           <div key={ud.id}>
-            <TablistCard key={ud.id} user={ud} />
+            <TablistCard key={ud.id} user={ud} tab={tab} />
           </div>
         ))}
     </>

@@ -1,29 +1,40 @@
 import ReactDOM from "react-dom/client";
-import HomePage from "./pages/HomePage.tsx";
-import Users from "./pages/Users.tsx";
+import AllUsersPage from "./pages/AllUsersPage.tsx";
+import UserPage from "./pages/UserPage.tsx";
+import { UserAlbumPage } from "./pages/UserAlbumPage.tsx";
+
+import { loader as UsersLoader } from "./pages/AllUsersPage.tsx";
+import { loader as albumLoader } from "./pages/UserAlbumPage.tsx";
+import { UserPostPage, loader as postLoader } from "./pages/UserPostPage.tsx";
+
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import { loader as UsersLoader } from "./pages/Users.tsx";
 import "bootstrap/dist/css/bootstrap.min.css";
-import UserIdPage from "./pages/UserIdPage.tsx";
-import { UserPostPage } from "./pages/UserPostPage.tsx";
+
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <HomePage />,
+    loader: UsersLoader,
+    element: <AllUsersPage />,
   },
 
   {
     path: "/users",
     loader: UsersLoader,
-    element: <Users />,
+    element: <AllUsersPage />,
   },
   {
     path: "/users/:userId",
-    element: <UserIdPage />,
+    element: <UserPage />,
   },
   {
     path: "/users/:userId/posts/:postId",
     element: <UserPostPage />,
+    loader: postLoader,
+  },
+  {
+    path: "/users/:userId/albums/:albumId",
+    loader: albumLoader,
+    element: <UserAlbumPage />,
   },
 ]);
 
