@@ -2,9 +2,9 @@ import { Link, useLoaderData } from "react-router-dom";
 import { FetchData } from "../function/FetchData";
 import { User } from "../Types/user";
 import { AlbumType } from "../Types/albumType";
-// import AlbumCard from "../Components/AlbumCard";
-import { Card, Image } from "react-bootstrap";
+import { Button, Card, Image } from "react-bootstrap";
 import LikeButton from "../Components/LikeButton";
+import { getCount, useFavoritesStore } from "../../stores/favorites-store";
 
 interface PageData {
   user: User;
@@ -42,9 +42,17 @@ export const loader = async ({ params }: { params: any }) => {
 
 export const UserAlbumPage = () => {
   const pageData = useLoaderData() as PageData;
+  const { likedAlbums, setLikedAlbums } = useFavoritesStore();
+  const state = useFavoritesStore.getState();
+  const count = getCount(state);
+
   return (
     <div>
-      UserAlbums <br />
+      UserAlbums
+      <a href="/favorites">favorites</a>
+      <br />
+      <p>Count: {count}</p>
+      <br />
       <Link to={"/users/" + pageData.user.id}>{pageData.user?.username}</Link>;
       {pageData && pageData.album && (
         <Card style={{ width: "18rem" }}>
@@ -56,37 +64,62 @@ export const UserAlbumPage = () => {
             <Card.Subtitle className="mb-2 text-muted">
               {pageData.album.title}
             </Card.Subtitle>
-
-            <Card.Link href={"users/" + pageData.album.userId}>
-              Card Link
-            </Card.Link>
           </Card.Body>
         </Card>
       )}
       {pageData &&
         pageData.photo &&
-        pageData.photo.map((old) => (
-          <Card key={old.id} style={{ width: "18rem" }}>
-            <Card.Body>
-              <Card.Title>
-                Photo id:{old.id}. &nbsp; Album id:
-                {old.albumId}
-              </Card.Title>
-              <Card.Subtitle className="mb-2 text-muted">
-                {old.title}
-              </Card.Subtitle>
-              <Image
-                src={old.url}
-                alt={old.title}
-                thumbnail
-                style={{
-                  height: "200px",
-                }}
-              />
-              <LikeButton liked={true} />
-            </Card.Body>
-          </Card>
-        ))}
+        pageData.photo.map((old) => {
+          const liked = !!likedAlbums.find((a) => a.photoId === old.id);
+          return (
+            <Card key={old.id} style={{ width: "18rem" }}>
+              <Card.Body>
+                <Card.Title>
+                  Photo id:{old.id}. &nbsp; Album id:
+                  {old.albumId}
+                </Card.Title>
+                <Card.Subtitle className="mb-2 text-muted">
+                  {old.title}
+                </Card.Subtitle>
+                <Image
+                  src={old.url}
+                  alt={old.title}
+                  thumbnail
+                  style={{
+                    height: "200px",
+                  }}
+                />
+                <Button variant="light">
+                  <LikeButton
+                    liked={liked}
+                    onClick={() => {
+                      if (liked) {
+                        setLikedAlbums(
+                          likedAlbums.filter(
+                            (album) => album.photoId !== old.id
+                          )
+                        );
+                      } else {
+                        setLikedAlbums([
+                          ...likedAlbums,
+                          {
+                            albumId: pageData.album.id,
+                            photoId: old.id,
+                            id: old.id,
+                            userId: pageData.user.id,
+                            url: old.url,
+                            title: old.title,
+                            thumbnailUrl: old.thumbnailUrl,
+                          },
+                        ]);
+                      }
+                    }}
+                  />
+                </Button>
+              </Card.Body>
+            </Card>
+          );
+        })}
     </div>
   );
 };

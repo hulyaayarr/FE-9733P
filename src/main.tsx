@@ -9,27 +9,39 @@ import { UserPostPage, loader as postLoader } from "./pages/UserPostPage.tsx";
 
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
+import FavoritesPage from "./pages/FavoritesPage.tsx";
+import Root from "./root.tsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    loader: UsersLoader,
-    element: <AllUsersPage />,
-  },
+    element: <Root />,
+    children: [
+      {
+        path: "/",
+        loader: UsersLoader,
+        element: <AllUsersPage />,
+      },
 
-  {
-    path: "/users/:userId",
-    element: <UserPage />,
-  },
-  {
-    path: "/users/:userId/posts/:postId",
-    element: <UserPostPage />,
-    loader: postLoader,
-  },
-  {
-    path: "/users/:userId/albums/:albumId",
-    loader: albumLoader,
-    element: <UserAlbumPage />,
+      {
+        path: "/users/:userId",
+        element: <UserPage />,
+      },
+      {
+        path: "/users/:userId/posts/:postId",
+        element: <UserPostPage />,
+        loader: postLoader,
+      },
+      {
+        path: "/users/:userId/albums/:albumId",
+        loader: albumLoader,
+        element: <UserAlbumPage />,
+      },
+      {
+        path: "/favorites",
+        element: <FavoritesPage />,
+      },
+    ],
   },
 ]);
 
