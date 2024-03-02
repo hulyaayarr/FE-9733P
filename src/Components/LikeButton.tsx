@@ -11,13 +11,13 @@ const LikeButton = ({
     onClick();
   };
   return (
-    <button onClick={handleButtonClick}>
+    <div onClick={handleButtonClick}>
       <IoMdHeart
         fill={liked ? "red" : "transparent"}
         stroke={liked ? "tranparent" : "black"}
         strokeWidth={20}
       />
-    </button>
+    </div>
   );
 };
 

@@ -4,6 +4,9 @@ import { ClipLoader } from "react-spinners";
 import { userPost } from "../Types/user";
 import TablistCard from "./TablistCards";
 import { FetchData } from "../function/FetchData";
+import { Button } from "react-bootstrap";
+import LikeButton from "./LikeButton";
+import { useFavoritesStore } from "../../stores/favorites-store";
 
 type tabs = "posts" | "albums" | "todos";
 
@@ -33,7 +36,7 @@ export function TabList({ userId }: { userId: string }) {
   useEffect(() => {
     getData();
   }, [tab]);
-
+  const { likedAlbums, setLikedAlbums } = useFavoritesStore();
   return (
     <>
       <Nav variant="tabs" defaultActiveKey="/post">
@@ -71,11 +74,50 @@ export function TabList({ userId }: { userId: string }) {
       {!isLoading &&
         !error &&
         userData &&
-        userData.map((ud) => (
-          <div key={ud.id}>
-            <TablistCard key={ud.id} user={ud} tab={tab} />
-          </div>
-        ))}
+        tab === "posts" &&
+        userData.map((post) => {
+          const liked = !!likedAlbums.find((a) => a.photoId === post.id);
+
+          return (
+            <div key={post.id}>
+              <TablistCard user={post} tab={tab} />
+              <Button variant="light">
+                <LikeButton
+                  key={`like-button-${post.id}`}
+                  liked={liked}
+                  onClick={() => {
+                    if (liked) {
+                      setLikedAlbums(
+                        likedAlbums.filter((album) => album.photoId !== post.id)
+                      );
+                    } else {
+                      setLikedAlbums([
+                        ...likedAlbums,
+                        {
+                          photoId: post.id,
+                          id: post.id,
+                          userId: post.userId,
+                          title: post.title,
+                        },
+                      ]);
+                    }
+                  }}
+                />
+              </Button>
+            </div>
+          );
+        })}
+      {!isLoading &&
+        !error &&
+        userData &&
+        tab !== "posts" &&
+        userData.map((ud) => {
+          return (
+            <div key={ud.id}>
+              <TablistCard user={ud} tab={tab} />
+            </div>
+          );
+        })}
     </>
   );
 }

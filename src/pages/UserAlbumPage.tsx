@@ -4,7 +4,7 @@ import { User } from "../Types/user";
 import { AlbumType } from "../Types/albumType";
 import { Button, Card, Image } from "react-bootstrap";
 import LikeButton from "../Components/LikeButton";
-import { getCount, useFavoritesStore } from "../../stores/favorites-store";
+import { useFavoritesStore } from "../../stores/favorites-store";
 
 interface PageData {
   user: User;
@@ -43,16 +43,9 @@ export const loader = async ({ params }: { params: any }) => {
 export const UserAlbumPage = () => {
   const pageData = useLoaderData() as PageData;
   const { likedAlbums, setLikedAlbums } = useFavoritesStore();
-  const state = useFavoritesStore.getState();
-  const count = getCount(state);
 
   return (
     <div>
-      UserAlbums
-      <a href="/favorites">favorites</a>
-      <br />
-      <p>Count: {count}</p>
-      <br />
       <Link to={"/users/" + pageData.user.id}>{pageData.user?.username}</Link>;
       {pageData && pageData.album && (
         <Card style={{ width: "18rem" }}>
