@@ -28,4 +28,5 @@ export interface userPost {
   id: number;
   title: string;
   body: string;
+  completed?: boolean;
 }

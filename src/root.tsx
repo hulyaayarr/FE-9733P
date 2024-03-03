@@ -4,7 +4,11 @@ import { Outlet } from "react-router-dom";
 
 const Root = () => {
   return (
-    <div>
+    <div
+      style={{
+        backgroundColor: "#F1F3FA",
+      }}
+    >
       <NavbarComponent />
       <Outlet />
     </div>

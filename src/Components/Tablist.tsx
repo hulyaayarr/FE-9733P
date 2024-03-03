@@ -4,7 +4,7 @@ import { ClipLoader } from "react-spinners";
 import { userPost } from "../Types/user";
 import TablistCard from "./TablistCards";
 import { FetchData } from "../function/FetchData";
-import { Button } from "react-bootstrap";
+import { Button, Col, Container } from "react-bootstrap";
 import LikeButton from "./LikeButton";
 import { useFavoritesStore } from "../../stores/favorites-store";
 
@@ -38,7 +38,11 @@ export function TabList({ userId }: { userId: string }) {
   }, [tab]);
   const { likedAlbums, setLikedAlbums } = useFavoritesStore();
   return (
-    <>
+    <Container
+      style={{
+        minHeight: "100vh",
+      }}
+    >
       <Nav variant="tabs" defaultActiveKey="/post">
         <Nav.Item
           onClick={() => {
@@ -66,7 +70,10 @@ export function TabList({ userId }: { userId: string }) {
       </Nav>
       {!!error && error}
       {isLoading && (
-        <div className="d-flex justify-content-center align-items-center">
+        <div
+          className="d-flex justify-content-center align-items-center"
+          style={{ minHeight: "80vh" }}
+        >
           Loading...&nbsp;
           <ClipLoader />
         </div>
@@ -79,32 +86,36 @@ export function TabList({ userId }: { userId: string }) {
           const liked = !!likedAlbums.find((a) => a.photoId === post.id);
 
           return (
-            <div key={post.id}>
+            <Col sm={12} md={6} xl={3} className="d-flex   mb-3 " key={post.id}>
               <TablistCard user={post} tab={tab} />
-              <Button variant="light">
-                <LikeButton
-                  key={`like-button-${post.id}`}
-                  liked={liked}
-                  onClick={() => {
-                    if (liked) {
-                      setLikedAlbums(
-                        likedAlbums.filter((album) => album.photoId !== post.id)
-                      );
-                    } else {
-                      setLikedAlbums([
-                        ...likedAlbums,
-                        {
-                          photoId: post.id,
-                          id: post.id,
-                          userId: post.userId,
-                          title: post.title,
-                        },
-                      ]);
-                    }
-                  }}
-                />
-              </Button>
-            </div>
+              <div>
+                <Button variant="light">
+                  <LikeButton
+                    key={`like-button-${post.id}`}
+                    liked={liked}
+                    onClick={() => {
+                      if (liked) {
+                        setLikedAlbums(
+                          likedAlbums.filter(
+                            (album) => album.photoId !== post.id
+                          )
+                        );
+                      } else {
+                        setLikedAlbums([
+                          ...likedAlbums,
+                          {
+                            photoId: post.id,
+                            id: post.id,
+                            userId: post.userId,
+                            title: post.title,
+                          },
+                        ]);
+                      }
+                    }}
+                  />
+                </Button>
+              </div>
+            </Col>
           );
         })}
       {!isLoading &&
@@ -114,7 +125,9 @@ export function TabList({ userId }: { userId: string }) {
         userData.map((ud) => {
           return (
             <div key={ud.id}>
-              <TablistCard user={ud} tab={tab} />
+              <Col sm={12} md={6} xl={3} className="d-flex   mb-3 " key={ud.id}>
+                <TablistCard user={ud} tab={tab} />
+              </Col>
             </div>
           );
         })}

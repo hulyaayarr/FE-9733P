@@ -5,12 +5,16 @@ import { UserAlbumPage } from "./pages/UserAlbumPage.tsx";
 
 import { loader as UsersLoader } from "./pages/AllUsersPage.tsx";
 import { loader as albumLoader } from "./pages/UserAlbumPage.tsx";
+import { loader as allPostLoader } from "./pages/AllPostPage.tsx";
+
 import { UserPostPage, loader as postLoader } from "./pages/UserPostPage.tsx";
 
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap";
 import FavoritesPage from "./pages/FavoritesPage.tsx";
 import Root from "./root.tsx";
+import AllPost from "./pages/AllPostPage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -21,6 +25,16 @@ const router = createBrowserRouter([
         path: "/",
         loader: UsersLoader,
         element: <AllUsersPage />,
+      },
+      {
+        path: "/users",
+        loader: UsersLoader,
+        element: <AllUsersPage />,
+      },
+      {
+        path: "/posts",
+        loader: allPostLoader,
+        element: <AllPost />,
       },
 
       {

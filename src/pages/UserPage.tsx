@@ -1,26 +1,34 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { User } from "../Types/user";
 import { TabList } from "../Components/Tablist";
 import { FetchData } from "../function/FetchData";
+import { User } from "../Types/user";
+import { Container, Row } from "react-bootstrap";
 
 const UserPage = () => {
-  const [user, setUser] = useState<User | null>(null);
+  const [userData, setUserData] = useState<User | null>(null);
 
   const params = useParams();
   const userId = params.userId;
   async function getUser() {
-    const data = await FetchData(
+    const userData = await FetchData(
       "https://jsonplaceholder.typicode.com/users/" + userId
     );
-
-    setUser(data);
+    setUserData(userData);
   }
   useEffect(() => {
     getUser();
   }, []);
-  console.log({ user });
-  return <div>{userId && <TabList userId={userId} />}</div>;
+
+  return (
+    <Container>
+      <Row>
+        {" "}
+        <h1 className="fs-1 my-5">@{userData?.username}</h1>
+      </Row>
+      <Row>{userId && <TabList userId={userId} />}</Row>
+    </Container>
+  );
 };
 
 export default UserPage;
