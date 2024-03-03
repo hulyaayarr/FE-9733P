@@ -118,6 +118,6 @@ export function TabList({ userId }: { userId: string }) {
             </div>
           );
         })}
-    </>
+    </Container>
   );
 }
