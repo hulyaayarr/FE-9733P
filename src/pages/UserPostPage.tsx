@@ -4,6 +4,7 @@ import { FetchData } from "../function/FetchData";
 import CommentCards from "../Components/CommentCards";
 import { User } from "../Types/user";
 import { commentType } from "../Types/comments";
+import { Col, Container, Row } from "react-bootstrap";
 
 interface PageData {
   user: User;
@@ -31,15 +32,28 @@ export const UserPostPage = () => {
   const pageData = useLoaderData() as PageData;
 
   return (
-    <div>
-      <h2>User Name</h2>
-      <Link to={"/users/" + pageData.user.id}>{pageData.user?.username}</Link>;
+    <Container>
+      <Row>
+        <Link
+          className="fs-2 my-4"
+          to={"/users/" + pageData.user.id}
+          style={{
+            textDecoration: "none",
+            color: "#000",
+          }}
+        >
+          @{pageData.user?.username}
+        </Link>
+      </Row>
+
       <h2>Comments</h2>
       {pageData &&
         pageData.comment &&
         pageData.comment.map((com) => (
-          <CommentCards key={com.id} comment={com} />
+          <Col key={com.id} className="my-4">
+            <CommentCards comment={com} />
+          </Col>
         ))}
-    </div>
+    </Container>
   );
 };

@@ -97,7 +97,9 @@ export function TabList({ userId }: { userId: string }) {
                       if (liked) {
                         setLikedAlbums(
                           likedAlbums.filter(
-                            (album) => album.photoId !== post.id
+                            (album) =>
+                              album.photoId !== post.id &&
+                              album.userId !== post.userId
                           )
                         );
                       } else {

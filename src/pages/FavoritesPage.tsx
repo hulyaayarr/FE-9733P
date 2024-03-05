@@ -13,11 +13,13 @@ const FavoritesPage = () => {
       <Row className="mx-4 " style={{ minHeight: "100vh" }}>
         {likedAlbums.length === 0 && <div>No Liked Post or Album Yet...</div>}
         {likedAlbums.map((likedPhoto) => (
-          <Col>
+          <Col key={likedPhoto.id}>
             <FaTrash
               onClick={() => {
                 setLikedAlbums(
-                  likedAlbums.filter((album) => album.photoId !== likedPhoto.id)
+                  likedAlbums.filter(
+                    (_, index) => index !== likedAlbums.indexOf(likedPhoto)
+                  )
                 );
               }}
             />
@@ -25,7 +27,7 @@ const FavoritesPage = () => {
               <Card style={{ width: "18rem" }}>
                 <Card.Body>
                   <img
-                    key={likedPhoto.id}
+                    key={likedPhoto.albumId}
                     src={likedPhoto.url}
                     onClick={() => {
                       window.location.href = `/users/${likedPhoto.userId}/albums/${likedPhoto.albumId}`;
@@ -51,7 +53,10 @@ const FavoritesPage = () => {
               </Card>
             )}
             {likedPhoto.title && (
-              <Card style={{ width: "18rem", height: "18rem" }}>
+              <Card
+                style={{ width: "18rem", height: "18rem" }}
+                key={likedPhoto.postId}
+              >
                 <Card.Body>
                   <Card.Title>{likedPhoto.title}</Card.Title>
                   <Card.Text> Body:{likedPhoto.body}</Card.Text>
