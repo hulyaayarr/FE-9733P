@@ -26,6 +26,6 @@ export const useFavoritesStore = create<photoState>()(
   )
 );
 export const getCount = (state: photoState) => {
-  const count = state.likedAlbums.length;
+  const count = state.likedAlbums.length + state.likedPosts.length;
   return count;
 };
