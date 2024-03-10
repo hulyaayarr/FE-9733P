@@ -24,6 +24,7 @@ export interface User {
 
 export type users = User[];
 export interface userPost {
+  postId?: number;
   userId: number;
   id: number;
   title: string;

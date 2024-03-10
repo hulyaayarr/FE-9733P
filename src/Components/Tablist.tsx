@@ -36,7 +36,8 @@ export function TabList({ userId }: { userId: string }) {
   useEffect(() => {
     getData();
   }, [tab]);
-  const { likedAlbums, setLikedAlbums } = useFavoritesStore();
+  const { likedPosts, setLikedPosts } = useFavoritesStore();
+
   return (
     <Container
       style={{
@@ -83,7 +84,7 @@ export function TabList({ userId }: { userId: string }) {
         userData &&
         tab === "posts" &&
         userData.map((post) => {
-          const liked = !!likedAlbums.find((a) => a.photoId === post.id);
+          const liked = !!likedPosts.find((a) => a.id === post.id);
 
           return (
             <Col sm={12} md={6} xl={3} className="d-flex   mb-3 " key={post.id}>
@@ -95,21 +96,17 @@ export function TabList({ userId }: { userId: string }) {
                     liked={liked}
                     onClick={() => {
                       if (liked) {
-                        setLikedAlbums(
-                          likedAlbums.filter(
-                            (album) =>
-                              album.photoId !== post.id &&
-                              album.userId !== post.userId
-                          )
+                        setLikedPosts(
+                          likedPosts.filter((album) => album.id !== post.id)
                         );
                       } else {
-                        setLikedAlbums([
-                          ...likedAlbums,
+                        setLikedPosts([
+                          ...likedPosts,
                           {
-                            photoId: post.id,
-                            id: post.id,
                             userId: post.userId,
+                            id: post.id,
                             title: post.title,
+                            body: post.body,
                           },
                         ]);
                       }

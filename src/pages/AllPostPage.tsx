@@ -1,5 +1,5 @@
 import { useLoaderData } from "react-router-dom";
-import { userPost } from "../Types/user";
+import { favoritePostType } from "../Types/favoritesPosts";
 import { FetchData } from "../function/FetchData";
 import { Container, Col, Row, Card, Button } from "react-bootstrap";
 import LikeButton from "../Components/LikeButton";
@@ -11,8 +11,9 @@ export async function loader() {
 
 export default function AllPost() {
   //@ts-expect-error unknown
-  const posts: userPost[] = useLoaderData();
-  const { likedAlbums, setLikedAlbums } = useFavoritesStore();
+  const posts: favoritePostType[] = useLoaderData();
+  // const { likedAlbums, setLikedAlbums } = useFavoritesStore();
+  const { likedPosts, setLikedPosts } = useFavoritesStore();
 
   return (
     <>
@@ -20,7 +21,7 @@ export default function AllPost() {
         <Row>
           <h1 className=" ps-4 gy-4">Posts</h1>
           {posts.map((post) => {
-            const liked = !!likedAlbums.find((a) => a.photoId === post.id);
+            const liked = !!likedPosts.find((a) => a.id === post.id);
 
             return (
               <Col
@@ -67,19 +68,20 @@ export default function AllPost() {
                       liked={liked}
                       onClick={() => {
                         if (liked) {
-                          setLikedAlbums(
-                            likedAlbums.filter(
-                              (album) => album.photoId !== post.id
+                          setLikedPosts(
+                            likedPosts.filter(
+                              (liked) => liked.postId !== post.id
                             )
                           );
                         } else {
-                          setLikedAlbums([
-                            ...likedAlbums,
+                          setLikedPosts([
+                            ...likedPosts,
                             {
-                              photoId: post.id,
+                              postId: post.id,
                               id: post.id,
                               userId: post.userId,
                               title: post.title,
+                              body: post.body,
                             },
                           ]);
                         }
