@@ -15,7 +15,9 @@ export default function TablistCard({
       <Card.Body>
         <Card.Title>{user.title}</Card.Title>
         <Card.Subtitle className="mb-2 text-muted">{user.body}</Card.Subtitle>
-        {tab === "todos" && <Card.Text>Completed: {user.completed}</Card.Text>}
+        {tab === "todos" && (
+          <Card.Text>Completed: {user.completed ? "✔️" : "✖️"}</Card.Text>
+        )}
         {tab !== "todos" && (
           <div className="d-flex justify-content-center mt-5">
             <Button

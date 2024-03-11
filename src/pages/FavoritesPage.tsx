@@ -29,19 +29,23 @@ const FavoritesPage = () => {
 
             <Card style={{ width: "18rem", height: "20rem" }}>
               <Card.Body>
-                <img
-                  key={likedPhoto.albumId}
-                  src={likedPhoto.url}
-                  onClick={() => {
-                    window.location.href = `/users/${likedPhoto.userId}/albums/${likedPhoto.albumId}`;
-                  }}
-                  style={{
-                    height: "100px",
-                  }}
-                  alt={likedPhoto.title}
-                />
+                <div className="text-center">
+                  <img
+                    key={likedPhoto.albumId}
+                    src={likedPhoto.url}
+                    onClick={() => {
+                      window.location.href = `/users/${likedPhoto.userId}/albums/${likedPhoto.albumId}`;
+                    }}
+                    style={{
+                      height: "200px",
+                      textAlign: "center",
+                      marginBottom: "50px",
+                    }}
+                    alt={likedPhoto.title}
+                  />
+                </div>
 
-                <div className="text-center -">
+                <div className="text-center">
                   <Button
                     style={{
                       backgroundColor: "rgb(178, 172, 243)",
