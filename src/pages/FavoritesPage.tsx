@@ -29,6 +29,10 @@ const FavoritesPage = () => {
 
             <Card style={{ width: "18rem", height: "20rem" }}>
               <Card.Body>
+                <Card.Text>
+                  <h5>{likedPhoto.title}</h5>
+                </Card.Text>
+
                 <div className="text-center">
                   <img
                     key={likedPhoto.albumId}
